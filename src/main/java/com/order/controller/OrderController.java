@@ -3,6 +3,7 @@ package com.order.controller;
 import com.order.model.Order;
 import com.order.repository.OrderRepository;
 import com.order.service.KafkaProducerService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
@@ -27,9 +28,7 @@ public class OrderController {
     }
 
     @PostMapping
-    public Mono<String> placeOrder(@RequestBody Order order) {
-//        return orderMono.flatMap(order -> kafkaProducerService.sendOrder(order)
-//                .thenReturn("Order Sent to Kafka successfully")
+    public Mono<String> placeOrder(@Valid @RequestBody Order order) {
         return kafkaProducerService.sendOrder(order);
 
     }
