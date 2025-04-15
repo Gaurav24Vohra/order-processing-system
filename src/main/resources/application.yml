@@ -1,27 +1,32 @@
-#spring.application.name=OrderProcessingSystem
 server:
   port: 8080
 
 spring:
   data:
     mongodb:
-      url: mongodb://localhost:27017/orderdb
+      url: ${SPRING_DATA_MONGODB_URI:mongodb://localhost:27017/orders}
 
-kafka:
-  topic:
-    name: order-topic
-  bootstrap-servers: localhost:9092
-  producer:
-    key-serializer: org.apache.kafka.common.serialization.StringSerializer
-    value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+  kafka:
+    bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      group-id: order-processor-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring:
+          json:
+            trusted:
+               packages: "*"
+    listener:
+      ack-mode: batch
+    topic:
+      name: order-topic
 
-  consumer:
-    group-id: order-processor-group
-    auto-offset-reset: earliest
-    key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-    value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
-    properties:
-      spring.json.trusted.packages: "*"
-
-  listener:
-    ack-mode: batch
+logging:
+  level:
+    org.springframework.kafka: DEBUG
+    org.apache.kafka: DEBUG

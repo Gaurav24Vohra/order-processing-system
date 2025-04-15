@@ -1,19 +1,21 @@
 package com.order.service;
 
 import com.order.model.Order;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 @Service
-@RequiredArgsConstructor
 public class KafkaProducerService {
 
     private final KafkaTemplate<String, Order> kafkaTemplate;
 
-    @Value("${kafka.topic.name}")
+    public KafkaProducerService(KafkaTemplate<String, Order> kafkaTemplate) {
+        this.kafkaTemplate = kafkaTemplate;
+    }
+
+    @Value("${spring.kafka.topic.name}")
     private String topic;
 
 

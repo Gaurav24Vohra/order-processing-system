@@ -17,7 +17,7 @@ public class KafkaConsumerService {
 
     private static final Logger log = LoggerFactory.getLogger(KafkaConsumerService.class);
 
-    @KafkaListener(topics = "${kafka.topic.name}", groupId = "order-group", containerFactory = "kafkaListenerContainerFactory")
+    @KafkaListener(topics = "${spring.kafka.topic.name}", groupId = "order-group", containerFactory = "kafkaListenerContainerFactory")
     public void consume(Order order){
         log.info("Consumed order from Kafka: {} " , order);
         orderRepository.save(order)
