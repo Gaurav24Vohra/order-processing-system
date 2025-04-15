@@ -19,21 +19,15 @@ public class KafkaProducerConfig {
         this.kafkaProperties = kafkaProperties;
     }
 
-//    @Bean
-//    public ReactiveKafkaProducerTemplate<String, Order> reactiveKafkaProducerTemplate() {
-//        SenderOptions<String, Order> senderOptions = SenderOptions.create(kafkaProperties.buildProducerProperties());
-//        return new ReactiveKafkaProducerTemplate<>(senderOptions);
-//    }
-
     @Bean
-    public ProducerFactory<String, Order> producerFactory(){
+    public ProducerFactory<String, Order> producerFactory() {
         Map<String, Object> props = kafkaProperties.buildProducerProperties();
         return new DefaultKafkaProducerFactory<>(props);
     }
 
 
     @Bean
-    public KafkaTemplate<String, Order> kafkaTemplate(){
+    public KafkaTemplate<String, Order> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
 }
